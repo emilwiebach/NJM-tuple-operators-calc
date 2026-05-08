@@ -22,5 +22,5 @@ specifies the length of the tuples, the second a global factor and every additio
 
 ### Contained Examples
 
-Upon running the script njm is used to calculate the NJM operators up to n=4. Up to n=3 they are written into a .txt file called NJM.txt as code that can be readily inserted into LaTex.
+Upon running the script njm is used to calculate the NJM operators up to n=4. Up to n=3 they are written into a .txt file called njm.txt as code that can be readily inserted into LaTex. It can be found in this repository. 
 This code is used to display these operators up to n=3 in Appendix A of my bachelor's thesis. 

@@ -57,13 +57,15 @@ def add(t1, t2): #adds two tuple sums and simplifies the result
     tupsumsimplify(res)
     return res
 
-def multtup(tup1, tup2): #multiplies single tuples of same length
+def multtup(t1, t2): #multiplies single tuples of same length
+    tup1=copy.deepcopy(t1)
+    tup2=copy.deepcopy(t2)
     res=[]
     for i in range(len(tup1)):
         res.append(tup1[i]+tup2[i])
     return res
 
-def multiply(t1, t2): #multiplies two tuples
+def multiply(t1, t2): #multiplies two sums of tuples
     tupsum1=copy.deepcopy(t1)
     tupsum2=copy.deepcopy(t2)
     if tupsum1[0]<tupsum2[0]:
@@ -76,7 +78,7 @@ def multiply(t1, t2): #multiplies two tuples
             res.append([multtup(tupsum1[i][0], tupsum2[j][0]), tupsum1[i][1]*tupsum2[j][1]])
     return res
 
-def multiplyandsimplify(tupsum1, tupsum2): #multiplies two tuples and simplifies the result
+def multiplyandsimplify(tupsum1, tupsum2): #multiplies two sums of tuples tuples and simplifies the result
     res=multiply(tupsum1, tupsum2)
     tupsumsimplify(res)
     return res

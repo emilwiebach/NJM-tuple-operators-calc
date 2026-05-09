@@ -4,7 +4,10 @@ This Python project may be used as a calculator for sums of products of powers o
 
 ### Requirements
 
-As we use N as a paramter, one has to load the `simpy` module in one's interpreter in order to run the script. 
+As we use N as a parameter, one has to load the `simpy` module in one's interpreter in order to run the script. 
+* **Python:** 3.13
+* **Sympy:** 1.14.0
+* **mpmath:** 1.3.0
 
 ### Format
 

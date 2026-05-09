@@ -16,13 +16,27 @@ N=sympy.Symbol('N')
 #The tuple calculator is then used to compute some NJM operators (as introduced in my bachelor's thesis)
 #The NJM operators up to n=4 are calculated and stored according to the notation in my bachelor's thesis
 #The NJM operators up to n=3 are written in to a .txt file, that can be copied into LaTex to display them
+#The way the NJM operators are labeled is explained in Appendix A of my bachelor's thesis
 
-def extend(tupsum, k): #extends each tuple in a sum of tuples by k zeroes
+def extend(tupsum, k): #
+    """
+    Extends each tuple in a sum of tuples by k zeroes.
+
+    Args: 
+        tupsum (list): The sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+        k (int): The number of zeroes by which to extend.
+    """
     tupsum[0]=tupsum[0]+k
     for i in range(2,len(tupsum)):
         tupsum[i][0].extend(k*[0])
 
-def tupsumsimplify(tupsum): #if the same tuple appears more than once in a sum, this function simplifies these entries into one by adding coefficients
+def tupsumsimplify(tupsum): 
+    """
+    Simplifies a sum of tuples. If the same tuple appears more than once in a sum these entries are combined into one by adding coefficient. Tuples with coefficient zero are omitted.
+
+    Args:
+        tupsum (list): The sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+    """
     tupsum[1] = simplify(tupsum[1])
     i=2
     while i<len(tupsum):
@@ -38,13 +52,29 @@ def tupsumsimplify(tupsum): #if the same tuple appears more than once in a sum, 
             tupsum[i][1]=simplify(tupsum[i][1])
         i=i+1
 
-def scale(tupsum): #takes the global factor and multiplies each tuple with it, eliminating the global factor
+def scale(tupsum): 
+    """
+    Multiplies each tuple in a sum of tuples by the global factor and setting the global factor to 1.
+
+    Args:
+        tupsum (list): The sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+    """
     x=tupsum[1]
     for i in range(2,len(tupsum)):
         tupsum[i][1]=tupsum[i][1]*x
     tupsum[1]=1
 
-def add(t1, t2): #adds two tuple sums and simplifies the result
+def add(t1, t2): 
+    """
+    Adds two sums of tuples and simplifies the result without manipulating the arguments.
+
+    Args:
+        t1 (list): The first sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+        t2 (list): The second sum of tuples in the same format.
+
+    Returns:
+        list: The simplified sum of the two sums of tuples in the same format.
+    """
     tupsum1=copy.deepcopy(t1)
     tupsum2=copy.deepcopy(t2)
     if tupsum1[0]<tupsum2[0]:
@@ -57,7 +87,17 @@ def add(t1, t2): #adds two tuple sums and simplifies the result
     tupsumsimplify(res)
     return res
 
-def multtup(t1, t2): #multiplies single tuples of same length
+def multtup(t1, t2): 
+    """
+    Multiplies two tuples of the same length without manipulating the arguments.
+
+    Args:
+        t1 (list): The first tuple as a list of non-negative integers.
+        t2 (list): The second tuple in the same format.
+
+    Returns:
+        list: The product of the two tuples in the same format.
+    """
     tup1=copy.deepcopy(t1)
     tup2=copy.deepcopy(t2)
     res=[]
@@ -65,7 +105,17 @@ def multtup(t1, t2): #multiplies single tuples of same length
         res.append(tup1[i]+tup2[i])
     return res
 
-def multiply(t1, t2): #multiplies two sums of tuples
+def multiply(t1, t2): 
+    """
+    Multiplies two sums of tuples without manipulating the arguments.
+
+    Args:
+        t1 (list): The first sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+        t2 (list): The second sum of tuples in the same format.
+
+    Returns:
+        list: The product of the two sums of tuples in the same format.
+    """
     tupsum1=copy.deepcopy(t1)
     tupsum2=copy.deepcopy(t2)
     if tupsum1[0]<tupsum2[0]:
@@ -78,19 +128,47 @@ def multiply(t1, t2): #multiplies two sums of tuples
             res.append([multtup(tupsum1[i][0], tupsum2[j][0]), tupsum1[i][1]*tupsum2[j][1]])
     return res
 
-def multiplyandsimplify(tupsum1, tupsum2): #multiplies two sums of tuples tuples and simplifies the result
+def multiplyandsimplify(tupsum1, tupsum2): 
+    """
+    Multiplies two sums of tuples and simplifies the result without manipulating the arguments.
+
+    Args:
+        t1 (list): The first sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+        t2 (list): The second sum of tuples in the same format.
+
+    Returns:
+        list: The simplified product of the two sums of tuples in the same format.
+    """
     res=multiply(tupsum1, tupsum2)
     tupsumsimplify(res)
     return res
 
-def tuptostr(tup): #converts a tuple into a string
+def tuptostr(tup): 
+    """
+    Converts a tuple into a string.
+
+    Args:
+        tup (list): The tuple as a list of non-negative integers.
+
+    Returns:
+        str: The string containing the tuple.
+    """
     res="("
     for i in range(len(tup)):
         res=res+str(tup[i])+","
     res=res[:-1]+")"
     return res
 
-def tupsumtostr(tupsum): #converts a tuple sum into a string
+def tupsumtostr(tupsum): 
+    """
+    Converts a sum of tuples into a string.
+
+    Args:
+        tupsum (list): The sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+
+    Returns:
+        str: The string containing the sum of tuples.
+    """
     c=1/tupsum[1]
     res="("+str(tupsum[1])+")"+"*("
     for i in range(2,len(tupsum)):
@@ -98,7 +176,16 @@ def tupsumtostr(tupsum): #converts a tuple sum into a string
     res=res[:-1]+")"
     return res
 
-def tupsumtolatex(tupsum): #returns the latex code for a given tuple sum in a string
+def tupsumtolatex(tupsum): 
+    """
+    Generates a string containing LaTex that can be copied in order to display a sum of tuples.
+
+    Args:
+        tupsum (list): The sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+
+    Returns:
+        str: The string containing the LaTex code.
+    """
     c = 1 / tupsum[1]
     res = ""
     if c!=1.0:
@@ -119,7 +206,19 @@ def tupsumtolatex(tupsum): #returns the latex code for a given tuple sum in a st
 
 w=(N-1)/2 
 
-def njm (J, c, A, n): #given an up-down-tableau of length n, its predecessor NJM operator J, its n-th refined content c and a list of all possible other contents in step n A, this function calculates its NJM operator
+def njm (J, n, c, A): 
+    """
+    Calculates the NJM operator for a given up-down-tableau.
+
+    Args:
+        J (list): The NJM operator of the predecessor tableau as a sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
+        n (int): The length of the up-down-tableau.
+        c (expr): The n-th refined content of the up-down-tableau as a sympy-expression.
+        A (list): The refined contents that could have been added or removed in the n-th step instead as a list of sympy-expressions.
+
+    Returns:
+        list: The NJM operator for this up-down-tableau as a sum of tuples in the same format.
+    """
     x=[0]*(n-1)
     y=[0]*(n-1)
     y[n-2]=1
@@ -144,155 +243,155 @@ idemp.append(["J1", J1])
 # The NJM operators for n=2:
 c1_0 = -w
 A1_0 = [w+1, w-1]
-J1_0 = njm(J1, c1_0, A1_0, 2)
+J1_0 = njm(J1, 2, c1_0, A1_0)
 idemp.append(["J1_0", J1_0])
 
 c1_2 = w+1
 A1_2 = [-w, w-1]
-J1_2 = njm(J1, c1_2, A1_2, 2)
+J1_2 = njm(J1, 2, c1_2, A1_2)
 idemp.append(["J1_2", J1_2])
 
 c1_3 = w-1
 A1_3 = [-w, w+1]
-J1_3 = njm(J1, c1_3, A1_3, 2)
+J1_3 = njm(J1, 2, c1_3, A1_3)
 idemp.append(["J1_3", J1_3])
 
 # The NJM operators for n=3:
 c1_0_1 = w
 A1_0_1 = []
-J1_0_1 = njm(J1_0, c1_0_1, A1_0_1, 3)
+J1_0_1 = njm(J1_0, 3, c1_0_1, A1_0_1)
 idemp.append(["J1_0_1", J1_0_1])
 
 c1_2_1 = -w-1
 A1_2_1 = [w+2, w-1]
-J1_2_1 = njm(J1_2, c1_2_1, A1_2_1, 3)
+J1_2_1 = njm(J1_2, 3, c1_2_1, A1_2_1)
 idemp.append(["J1_2_1", J1_2_1])
 
 c1_2_4 = w+2
 A1_2_4 = [-w-1, w-1]
-J1_2_4 = njm(J1_2, c1_2_4, A1_2_4, 3)
+J1_2_4 = njm(J1_2, 3, c1_2_4, A1_2_4)
 idemp.append(["J1_2_4", J1_2_4])
 
 c1_2_5 = w-1
 A1_2_5 = [-w-1, w+2]
-J1_2_5 = njm(J1_2, c1_2_5, A1_2_5, 3)
+J1_2_5 = njm(J1_2, 3, c1_2_5, A1_2_5)
 idemp.append(["J1_2_5", J1_2_5])
 
 c1_3_1 = -w+1
 A1_3_1 = [w+1, w-2]
-J1_3_1 = njm(J1_3, c1_3_1, A1_3_1, 3)
+J1_3_1 = njm(J1_3, 3, c1_3_1, A1_3_1)
 idemp.append(["J1_3_1", J1_3_1])
 
 c1_3_5 = w+1
 A1_3_5 = [-w+1, w-2]
-J1_3_5 = njm(J1_3, c1_3_5, A1_3_5, 3)
+J1_3_5 = njm(J1_3, 3, c1_3_5, A1_3_5)
 idemp.append(["J1_3_5", J1_3_5])
 
 c1_3_6 = w-2
 A1_3_6 = [-w+1, w+1]
-J1_3_6 = njm(J1_3, c1_3_6, A1_3_6, 3)
+J1_3_6 = njm(J1_3, 3, c1_3_6, A1_3_6)
 idemp.append(["J1_3_6", J1_3_6])
 
 # The NJM operators for n=4:
 c1_0_1_0 = -w
 A1_0_1_0 = [w+1, w-1]
-J1_0_1_0 = njm(J1_0_1, c1_0_1_0, A1_0_1_0, 4)
+J1_0_1_0 = njm(J1_0_1, 4, c1_0_1_0, A1_0_1_0)
 
 c1_0_1_2 = w+1
 A1_0_1_2 = [-w, w-1]
-J1_0_1_2 = njm(J1_0_1, c1_0_1_2, A1_0_1_2, 4)
+J1_0_1_2 = njm(J1_0_1, 4, c1_0_1_2, A1_0_1_2)
 
 c1_0_1_3 = w-1
 A1_0_1_3 = [-w, w+1]
-J1_0_1_3 = njm(J1_0_1, c1_0_1_3, A1_0_1_3, 4)
+J1_0_1_3 = njm(J1_0_1, 4, c1_0_1_3, A1_0_1_3)
 
 c1_2_1_0 = -w
 A1_2_1_0 = [w+1, w-1]
-J1_2_1_0 = njm(J1_2_1, c1_2_1_0, A1_2_1_0, 4)
+J1_2_1_0 = njm(J1_2_1, 4, c1_2_1_0, A1_2_1_0)
 
 c1_2_1_2 = w+1
 A1_2_1_2 = [-w, w-1]
-J1_2_1_2 = njm(J1_2_1, c1_2_1_2, A1_2_1_2, 4)
+J1_2_1_2 = njm(J1_2_1, 4, c1_2_1_2, A1_2_1_2)
 
 c1_2_1_3 = w-1
 A1_2_1_3 = [-w, w+1]
-J1_2_1_3 = njm(J1_2_1, c1_2_1_3, A1_2_1_3, 4)
+J1_2_1_3 = njm(J1_2_1, 4, c1_2_1_3, A1_2_1_3)
 
 c1_2_4_2 = -w-2
 A1_2_4_2 = [w+3, w-1]
-J1_2_4_2 = njm(J1_2_4, c1_2_4_2, A1_2_4_2, 4)
+J1_2_4_2 = njm(J1_2_4, 4, c1_2_4_2, A1_2_4_2)
 
 c1_2_4_7 = w+3
 A1_2_4_7 = [-w-2, w-1]
-J1_2_4_7 = njm(J1_2_4, c1_2_4_7, A1_2_4_7, 4)
+J1_2_4_7 = njm(J1_2_4, 4, c1_2_4_7, A1_2_4_7)
 
 c1_2_4_8 = w-1
 A1_2_4_8 = [-w-2, w+3]
-J1_2_4_8 = njm(J1_2_4, c1_2_4_8, A1_2_4_8, 4)
+J1_2_4_8 = njm(J1_2_4, 4, c1_2_4_8, A1_2_4_8)
 
 c1_2_5_2 = -w+1
 A1_2_5_2 = [-w-1, w+2, w, w-2]
-J1_2_5_2 = njm(J1_2_5, c1_2_5_2, A1_2_5_2, 4)
+J1_2_5_2 = njm(J1_2_5, 4, c1_2_5_2, A1_2_5_2)
 
 c1_2_5_3 = -w-1
 A1_2_5_3 = [-w+1, w+2, w, w-2]
-J1_2_5_3 = njm(J1_2_5, c1_2_5_3, A1_2_5_3, 4)
+J1_2_5_3 = njm(J1_2_5, 4, c1_2_5_3, A1_2_5_3)
 
 c1_2_5_8 = w+2
 A1_2_5_8 = [-w+1, -w-1, w, w-2]
-J1_2_5_8 = njm(J1_2_5, c1_2_5_8, A1_2_5_8, 4)
+J1_2_5_8 = njm(J1_2_5, 4, c1_2_5_8, A1_2_5_8)
 
 c1_2_5_9 = w
 A1_2_5_9 = [-w+1, -w-1, w+2, w-2]
-J1_2_5_9 = njm(J1_2_5, c1_2_5_9, A1_2_5_9, 4)
+J1_2_5_9 = njm(J1_2_5, 4, c1_2_5_9, A1_2_5_9)
 
 c1_2_5_10 = w-2
 A1_2_5_10 = [-w+1, -w-1, w+2, w]
-J1_2_5_10 = njm(J1_2_5, c1_2_5_10, A1_2_5_10, 4)
+J1_2_5_10 = njm(J1_2_5, 4, c1_2_5_10, A1_2_5_10)
 
 c1_3_1_0 = -w
 A1_3_1_0 = [w+1, w-1]
-J1_3_1_0 = njm(J1_3_1, c1_3_1_0, A1_3_1_0, 4)
+J1_3_1_0 = njm(J1_3_1, 4, c1_3_1_0, A1_3_1_0)
 
 c1_3_1_2 = w+1
 A1_3_1_2 = [-w, w-1]
-J1_3_1_2 = njm(J1_3_1, c1_3_1_2, A1_3_1_2, 4)
+J1_3_1_2 = njm(J1_3_1, 4, c1_3_1_2, A1_3_1_2)
 
 c1_3_1_3 = w-1
 A1_3_1_3 = [-w, w+1]
-J1_3_1_3 = njm(J1_3_1, c1_3_1_3, A1_3_1_3, 4)
+J1_3_1_3 = njm(J1_3_1, 4, c1_3_1_3, A1_3_1_3)
 
 c1_3_5_2 = -w+1
 A1_3_5_2 = [-w-1, w+2, w, w-2]
-J1_3_5_2 = njm(J1_3_5, c1_3_5_2, A1_3_5_2, 4)
+J1_3_5_2 = njm(J1_3_5, 4, c1_3_5_2, A1_3_5_2)
 
 c1_3_5_3 = -w-1
 A1_3_5_3 = [-w+1, w+2, w, w-2]
-J1_3_5_3 = njm(J1_3_5, c1_3_5_3, A1_3_5_3, 4)
+J1_3_5_3 = njm(J1_3_5, 4, c1_3_5_3, A1_3_5_3)
 
 c1_3_5_8 = w+2
 A1_3_5_8 = [-w+1, -w-1, w, w-2]
-J1_3_5_8 = njm(J1_3_5, c1_3_5_8, A1_3_5_8, 4)
+J1_3_5_8 = njm(J1_3_5, 4, c1_3_5_8, A1_3_5_8)
 
 c1_3_5_9 = w
 A1_3_5_9 = [-w+1, -w-1, w+2, w-2]
-J1_3_5_9 = njm(J1_3_5, c1_3_5_9, A1_3_5_9, 4)
+J1_3_5_9 = njm(J1_3_5, 4, c1_3_5_9, A1_3_5_9)
 
 c1_3_5_10 = w-2
 A1_3_5_10 = [-w+1, -w-1, w+2, w]
-J1_3_5_10 = njm(J1_3_5, c1_3_5_10, A1_3_5_10, 4)
+J1_3_5_10 = njm(J1_3_5, 4, c1_3_5_10, A1_3_5_10)
 
 c1_3_6_3 = -w+2
 A1_3_6_3 = [w+1, w-3]
-J1_3_6_3 = njm(J1_3_6, c1_3_6_3, A1_3_6_3, 4)
+J1_3_6_3 = njm(J1_3_6, 4, c1_3_6_3, A1_3_6_3)
 
 c1_3_6_10 = w+1
 A1_3_6_10 = [-w+2, w-3]
-J1_3_6_10 = njm(J1_3_6, c1_3_6_10, A1_3_6_10, 4)
+J1_3_6_10 = njm(J1_3_6, 4, c1_3_6_10, A1_3_6_10)
 
 c1_3_6_11 = w-3
 A1_3_6_11 = [-w+2, w+1]
-J1_3_6_11 = njm(J1_3_6, c1_3_6_11, A1_3_6_11, 4)
+J1_3_6_11 = njm(J1_3_6, 4, c1_3_6_11, A1_3_6_11)
 
 for x in idemp:
     x[0]=x[0].replace("_", ",")

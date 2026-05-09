@@ -399,7 +399,7 @@ for x in idemp:
     x[0] = x[0]+")}"
 
 with open("njm.txt", "w") as f:
-    f.write("\\("+idemp[0][0]+"="+tupsumtolatex(idemp[0][1])+"\\)\\newline" \n)
+    f.write("\\("+idemp[0][0]+"="+tupsumtolatex(idemp[0][1])+"\\)\\newline\n")
 with open("njm.txt", "a") as f:
     for x in idemp[1:len(idemp)]:
-        f.write("\\(" + x[0] + "=" + tupsumtolatex(x[1])+"\\)\\newline" \n)
+        f.write("\\(" + x[0] + "=" + tupsumtolatex(x[1])+"\\)\\newline\n")

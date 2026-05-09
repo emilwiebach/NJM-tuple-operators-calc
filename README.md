@@ -8,6 +8,7 @@ As we use N as a parameter, one has to load the `simpy` module in one's interpre
 * **Python:** 3.13
 * **Sympy:** 1.14.0
 * **mpmath:** 1.3.0
+* **black:** 26.3.1
 
 ### Format
 

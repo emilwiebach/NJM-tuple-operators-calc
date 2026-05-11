@@ -8,9 +8,13 @@ As we use N as a parameter, one has to load the `simpy` module in one's interpre
 * **Python:** 3.13
 * **Sympy:** 1.14.0
 * **mpmath:** 1.3.0
+
+### Development
+
+Additional tools used for development:
 * **black:** 26.3.1
 
-### Format
+### Data Format
 
 A sum of tuples of the same length (if the length differs one has to simply fill up the shorter tuples with zeroes) is a list, where the first entry
 specifies the length of the tuples, the second a global factor and every additional entry a list consisting of a tuple (again a list) and a factor specific to this tuple.

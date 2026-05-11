@@ -227,7 +227,7 @@ def njm(J, n, c, A):
         J (list): The NJM operator of the predecessor tableau as a sum of tuples in the format [length, global factor, [tuple1, coeffiecient], ...].
         n (int): The length of the up-down-tableau.
         c (expr): The n-th refined content of the up-down-tableau as a sympy-expression.
-        A (list): The refined contents that could have been added or removed in the n-th step instead as a list of sympy-expressions.
+        A (list): The refined contents of all the boxes that could have been added or removed in the n-th step instead as a list of sympy-expressions.
 
     Returns:
         list: The NJM operator for this up-down-tableau as a sum of tuples in the same format.

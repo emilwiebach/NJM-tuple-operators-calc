@@ -5,6 +5,7 @@ import copy
 
 N = sympy.Symbol("N")
 
+
 # This calculator serves to add and multiply tuples of polarizer powers (as introduced in my bachelor's thesis)
 # A tuple corresponds to a product of polarizer powers, where the first entry is the exponent for p2, the second for p3 and so on
 # A tuple is implemented as a list with integer entries
@@ -87,7 +88,7 @@ def add(t1, t2):
         extend(tupsum2, tupsum1[0] - tupsum2[0])
     scale(tupsum1)
     scale(tupsum2)
-    res = tupsum1 + tupsum2[2 : len(tupsum2)]
+    res = tupsum1 + tupsum2[2: len(tupsum2)]
     tupsumsimplify(res)
     return res
 
@@ -201,11 +202,11 @@ def tupsumtolatex(tupsum):
     c = 1 / tupsum[1]
     res = ""
     if c != 1.0:
-        res = "\\frac{"
+        res = "\\frac{1}{" + str(c) + "}\\cdot \\left("
     for i in range(2, len(tupsum)):
         res = res + "(" + str(tupsum[i][1]) + ")" + "*" + tuptostr(tupsum[i][0]) + "+"
     if c != 1:
-        res = res[:-1] + "}{" + str(c) + "}"
+        res = res[:-1] + "\\right)"
     else:
         res = res[:-1]
     res = res.replace("(1)*", "")
@@ -413,7 +414,8 @@ for x in idemp:
     x[0] = x[0] + ")}"
 
 with open("njm.txt", "w") as f:
-    f.write("\\(" + idemp[0][0] + "=" + tupsumtolatex(idemp[0][1]) + "\\)\\newline\n")
+    f.write("\\begin{dmath*}" + idemp[0][0] + "=" + tupsumtolatex(idemp[0][1]) + "\\end{dmath*}")
 with open("njm.txt", "a") as f:
-    for x in idemp[1 : len(idemp)]:
-        f.write("\\(" + x[0] + "=" + tupsumtolatex(x[1]) + "\\)\\newline\n")
+    for x in idemp[1: len(idemp)]:
+        f.write("\\begin{dmath*}" + x[0] + "=" + tupsumtolatex(x[1]) + "\\end{dmath*}\n")
+
